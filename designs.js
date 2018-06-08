@@ -14,7 +14,6 @@ const pixelCanvas = document.querySelector('#pixelCanvas');
  * @param {Object} event Event descriptor
  */
 function colorChanged(event) {
-  event.preventDefault();
   currentColor = colorPicker.value;
 }
 
@@ -57,7 +56,6 @@ function makeGrid(rowCount, columnCount) {
   pixelCanvas.innerHTML = gridHTML;
   // Create an event listener on the grid to allow events to bubble
   pixelCanvas.addEventListener('click', function(event) {
-    event.preventDefault();
     const gridCell = document.getElementById(`${event.target.id}`);
     gridCell.setAttribute('style',`background-color: ${currentColor}`);
   });
