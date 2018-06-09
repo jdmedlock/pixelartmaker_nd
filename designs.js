@@ -1,12 +1,12 @@
 // Define global variables. In a "real" production quality application we
 // would encapsulate functionality for components of the app into classes
 // and expose variables to other parts of the app via methods
-let currentColor = '#000000';
 
 // Define references to the DOM elements
 const colorPicker = document.querySelector('#colorPicker');
 const sizePicker = document.querySelector('#sizePicker');
 const pixelCanvas = document.querySelector('#pixelCanvas');
+//let currentColor = colorPicker.value;
 
 /**
  * @description Update the current grid cell color from user interaction with
@@ -14,7 +14,8 @@ const pixelCanvas = document.querySelector('#pixelCanvas');
  * @param {Object} event Event descriptor
  */
 function colorChanged(event) {
-  currentColor = colorPicker.value;
+  //currentColor = event.target.value;
+  colorPicker.value = event.target.value;
 }
 
 // Create an event listener to process a request to change the grid cell color
@@ -32,6 +33,12 @@ sizePicker.addEventListener('submit', function (event) {
   );
 });
 
+// Create an event listener on the grid to allow events to bubble
+pixelCanvas.addEventListener('click', function(event) {
+  const gridCell = document.getElementById(`${event.target.id}`);
+  gridCell.setAttribute('style',`background-color: ${colorPicker.value}`);
+});
+
 /**
  * @description When size is submitted by the user draw the new grid
  * @param {Number} rowCount Number of rows in the grid
@@ -41,7 +48,7 @@ function makeGrid(rowCount, columnCount) {
   // Remove any previously created grid cells before creating a new grid
   const gridCells = document.getElementById('grid-cells');
   if (gridCells !== null) {
-    pixelCanvas.removeChild(gridCells);
+    pixelCanvas.innerHTML = '';
   }
   // Create and render a new grid
   let gridHTML = '<span id="grid-cells">';
@@ -54,9 +61,4 @@ function makeGrid(rowCount, columnCount) {
   }
   gridHTML += '</span>';
   pixelCanvas.innerHTML = gridHTML;
-  // Create an event listener on the grid to allow events to bubble
-  pixelCanvas.addEventListener('click', function(event) {
-    const gridCell = document.getElementById(`${event.target.id}`);
-    gridCell.setAttribute('style',`background-color: ${currentColor}`);
-  });
 }
